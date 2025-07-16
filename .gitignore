@@ -1,0 +1,31 @@
+# OS artifacts
+.DS_Store
+
+# Build artifacts
+/dist
+/out
+/packages
+/release-builds
+/renderer/dist
+
+# Dependencies
+/node_modules
+/renderer/node_modules
+/electron/node_modules
+
+# Environment/configs
+.env
+.env.*
+
+# Cache/temporary files
+.vite
+.parcel-cache
+.cache
+
+# Test artifacts
+coverage
+.nyc_output
+
+# Logs
+*.log
+npm-debug.log*

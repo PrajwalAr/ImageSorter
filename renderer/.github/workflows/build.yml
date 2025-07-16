@@ -1,0 +1,20 @@
+name: Build and Package
+on: [push]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm ci
+      - name: Build application
+        run: |
+          cd ..
+          npm run build:${{ matrix.os == 'macos-latest' && 'mac' || 'win' }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: image_sorter-${{ matrix.os }}
+          path: out
