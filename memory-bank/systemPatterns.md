@@ -74,4 +74,8 @@ graph TD
 - Supports filenames with or without extensions
 - Preserves original filename casing in destination
 - Flexible mode tries base name first, then extensions
+<<<<<<< HEAD
 - Explicit mode constructs filenames with prefix/suffix
+=======
+- Explicit mode constructs filenames with prefix/suffix
+>>>>>>> dc474c1 (Sanity commit)

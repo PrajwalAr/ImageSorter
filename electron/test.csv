@@ -2,4 +2,8 @@ filename
 test1
 TEST2
 Test3.jpg
+<<<<<<< HEAD
 MISSING
+=======
+MISSING
+>>>>>>> dc474c1 (Sanity commit)

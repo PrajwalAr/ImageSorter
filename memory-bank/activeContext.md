@@ -50,4 +50,8 @@
 - Add unit tests for core functionality
 - Implement automated builds
 - Create installers for different platforms
+<<<<<<< HEAD
 - Verify filename resolution across different filesystems
+=======
+- Verify filename resolution across different filesystems
+>>>>>>> dc474c1 (Sanity commit)
