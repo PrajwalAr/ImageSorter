@@ -9,6 +9,9 @@
 5. Enhanced error handling in main process
 6. Implemented toast notifications for user feedback during file operations
 7. Added progress tracking for copy operations
+8. Enhanced CSV filename handling with case-insensitive resolution
+9. Added support for filenames with/without extensions
+10. Removed unused ipcHandlers.js module
 
 ## Technical Decisions
 
@@ -17,6 +20,8 @@
 - Added TypeScript interfaces for strict typing
 - Used Vite for fast development experience
 - Configured Tailwind CSS for utility-first styling
+- Implemented case-insensitive filename resolution algorithm
+- Added flexible extension handling for image files
 
 ## Important Patterns
 
@@ -26,6 +31,8 @@
 - Context API for state management
 - Toast notifications for user feedback
 - Progress tracking for long-running operations
+- Case-insensitive filename matching
+- File extension fallback mechanism
 
 ## Production Deployment Fixes (2025-07-16)
 
@@ -43,3 +50,4 @@
 - Add unit tests for core functionality
 - Implement automated builds
 - Create installers for different platforms
+- Verify filename resolution across different filesystems

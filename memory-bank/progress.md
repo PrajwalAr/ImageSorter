@@ -41,6 +41,18 @@
 - Resolved path management issues by using absolute paths
 - Added proper error handling for file operations
 
+## 2025-07-17 Progress
+
+- Enhanced CSV filename handling:
+  - Added case-insensitive filename resolution
+  - Support for filenames with/without extensions
+  - Handles all casing variations (TEST.jpg, test.JPG, etc.)
+  - Preserves original filenames in destination
+- Created comprehensive test cases:
+  - Test CSV with mixed filename formats
+  - Test images for validation
+- Removed unused ipcHandlers.js module
+
 ## 2025-07-16 Progress
 
 - Fixed production deployment issues
@@ -59,6 +71,7 @@
 3. ~~Implement main process logic tests~~ (Completed via manual testing)
 4. Build and package for distribution
 5. User acceptance testing
+6. Verify filename resolution across different filesystems
 
 ## Production Build Fixes (2025-07-16)
 

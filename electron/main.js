@@ -3,6 +3,38 @@ const path = require('path')
 const fs = require('fs-extra')
 const csv = require('csv-parser')
 
+// Helper function to resolve filenames with case insensitivity
+async function resolveFilename(sourceDir, entry, matchingMode, prefix = '', extension = '') {
+  const normalizedEntry = entry.trim();
+  const files = await fs.readdir(sourceDir);
+  
+  if (matchingMode === 'explicit') {
+    // Construct explicit filename
+    const explicitName = `${prefix}${normalizedEntry}${extension}`;
+    const match = files.find(f => f.toLowerCase() === explicitName.toLowerCase());
+    return match || null;
+  } 
+  
+  // Flexible mode - try base name match
+  const baseMatch = files.find(file => {
+    const base = path.basename(file, path.extname(file));
+    return base.toLowerCase() === normalizedEntry.toLowerCase();
+  });
+  
+  if (baseMatch) return baseMatch;
+  
+  // Try with common extensions
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+  for (const ext of imageExtensions) {
+    const candidate = `${normalizedEntry}${ext}`;
+    if (files.some(f => f.toLowerCase() === candidate.toLowerCase())) {
+      return candidate;
+    }
+  }
+  
+  return null;
+}
+
 let mainWindow
 
 function createWindow() {
@@ -75,11 +107,10 @@ ipcMain.handle('copy-images', async (event, { csvPath, srcDir, destDir, matching
     const csvData = []
     await new Promise((resolve, reject) => {
       fs.createReadStream(csvPath)
-        .pipe(csv({ headers: false }))
+        .pipe(csv({ headers: true })) // Use header mode to parse columns
         .on('data', (row) => {
-          const values = Object.values(row)
-          if (values.length > 0) {
-            csvData.push(...values.filter(v => v.trim() !== ''))
+          if (row.filename) {
+            csvData.push(row.filename.trim());
           }
         })
         .on('end', resolve)
@@ -104,33 +135,24 @@ ipcMain.handle('copy-images', async (event, { csvPath, srcDir, destDir, matching
         mainWindow.webContents.send('copy-progress', progress)
       }
       
-      if (matchingMode === 'explicit') {
-        const filename = `${prefix}${entry}${extension}`
-        const srcPath = path.join(srcDir, filename)
-        if (await fs.pathExists(srcPath)) {
-          const destPath = path.join(destDir, filename)
-          await fs.copy(srcPath, destPath)
-          copiedFiles.push(filename)
-          found = true
-        }
-      } else { // flexible matching
-        const files = await fs.readdir(srcDir)
-        const matchingFile = files.find(file => 
-          file.includes(entry) && 
-          ['.jpg', '.jpeg', '.png', '.gif'].includes(path.extname(file).toLowerCase())
-        )
-        
-        if (matchingFile) {
-          const srcPath = path.join(srcDir, matchingFile)
-          const destPath = path.join(destDir, matchingFile)
-          await fs.copy(srcPath, destPath)
-          copiedFiles.push(matchingFile)
-          found = true
-        }
+      const resolvedFilename = await resolveFilename(
+        srcDir, 
+        entry, 
+        matchingMode, 
+        prefix, 
+        extension
+      );
+
+      if (resolvedFilename) {
+        const srcPath = path.join(srcDir, resolvedFilename);
+        const destPath = path.join(destDir, resolvedFilename);
+        await fs.copy(srcPath, destPath);
+        copiedFiles.push(resolvedFilename);
+        found = true;
       }
       
       if (!found) {
-        missingFiles.push(entry)
+        missingFiles.push(entry);
       }
     }
     

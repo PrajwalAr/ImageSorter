@@ -49,3 +49,29 @@ graph TD
   - Vite builds assets to /dist
   - Uses hashed filenames for cache busting
   - Base path set to './' for relative loading
+
+## Filename Resolution Algorithm
+
+```mermaid
+graph TD
+    A[CSV Entry] --> B{Explicit Mode?}
+    B -->|Yes| C[Construct Filename<br>prefix + entry + extension]
+    B -->|No| D[Try Base Name Match]
+    D --> E[Match file by base name]
+    E -->|Found| F[Return matched file]
+    E -->|Not Found| G[Try with extensions]
+    G --> H[.jpg, .jpeg, .png, .gif, .webp]
+    H -->|Found| I[Return matched file]
+    H -->|Not Found| J[Return null]
+    C --> K[Case-insensitive match]
+    K -->|Found| L[Return matched file]
+    K -->|Not Found| J
+```
+
+### Key Characteristics
+
+- Case-insensitive matching
+- Supports filenames with or without extensions
+- Preserves original filename casing in destination
+- Flexible mode tries base name first, then extensions
+- Explicit mode constructs filenames with prefix/suffix
