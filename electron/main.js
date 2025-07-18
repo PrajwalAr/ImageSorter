@@ -105,16 +105,16 @@ ipcMain.handle('copy-images', async (event, { csvPath, srcDir, destDir, matching
     const csvData = []
     await new Promise((resolve, reject) => {
       fs.createReadStream(csvPath)
-        .pipe(csv({ headers: true })) // Use header mode to parse columns
+        .pipe(csv({ headers: false }))
         .on('data', (row) => {
-          if (row.filename) {
-            csvData.push(row.filename.trim());
+          const values = Object.values(row)
+          if (values.length > 0) {
+            csvData.push(...values.filter(v => v.trim() !== ''))
           }
         })
         .on('end', resolve)
         .on('error', reject)
-    })
-
+      })
     // Send progress updates
     const total = csvData.length
     let processed = 0
