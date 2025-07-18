@@ -5,6 +5,7 @@
     "@electron-forge/maker-squirrel": "^7.8.1",
     "@electron-forge/maker-zip": "^7.8.1",
     "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
     "electron": "^37.2.2",
     "wait-on": "^8.0.3"
   },
@@ -317,8 +318,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "build:renderer": "cd renderer && npm run build",
-    "build:mac": "npm run build:renderer && npm run package -- --platform=darwin",
-    "build:win": "npm run build:renderer && npm run package -- --platform=win32",
+    "build:mac": "cross-env NODE_ENV=production npm run build:renderer && npm run package -- --platform=darwin",
+    "build:win": "cross-env NODE_ENV=production npm run build:renderer && npm run package -- --platform=win32",
     "dev": "concurrently -k \"cd renderer && npm run vite\" \"wait-on http://localhost:5174 && electron . --dev\""
   },
   "keywords": [],

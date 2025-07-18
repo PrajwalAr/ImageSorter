@@ -56,6 +56,38 @@ npm run build:mac
 npm run build:win
 ```
 
+## Windows Build Requirements
+
+To create Windows installers on macOS, you need to:
+
+1. Install Wine for cross-compilation:
+
+   ```bash
+   brew install wine
+   ```
+
+2. Set environment variables for code signing (optional but recommended):
+
+   ```bash
+   export WINDOWS_CERTIFICATE_FILE=/path/to/cert.pfx
+   export WINDOWS_CERTIFICATE_PASSWORD='your_password'
+   ```
+
+3. Run the build command:
+
+   ```bash
+   npm run build:win
+   ```
+
+## Troubleshooting
+
+If the Windows build fails:
+
+- Ensure Wine is properly installed
+- Check available disk space
+- Verify network connection for dependencies
+- Confirm Electron Forge and dependencies are properly installed
+
 ## Architecture Patterns
 
 - **IPC Communication**: Electron's inter-process communication

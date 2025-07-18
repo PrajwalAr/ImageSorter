@@ -57,12 +57,10 @@ function createWindow() {
     })
     mainWindow.webContents.openDevTools()
   } else {
-    // For development testing of production build
-    const devProdPath = path.join(__dirname, '../../renderer/dist/index.html')
-    // For packaged app
-    const packagedPath = path.join(process.resourcesPath, 'app/renderer/dist/index.html')
-    
-    const prodPath = fs.existsSync(devProdPath) ? devProdPath : packagedPath
+    const prodPath = process.env.NODE_ENV === 'development' 
+      ? path.join(__dirname, '../../renderer/dist/index.html')
+      : path.join(process.resourcesPath, 'app/renderer/dist/index.html');
+
     console.log('Production path resolved to:', prodPath)
     
     mainWindow.loadFile(prodPath).catch(err => {

@@ -10,6 +10,14 @@ module.exports = {
       }
     },
     {
+      name: '@electron-forge/maker-squirrel',
+      config: {
+        name: 'ImageSorter',
+        authors: 'Prajwal RaviChandra',
+        exe: 'ImageSorter.exe',
+      }
+    },
+    {
       name: '@electron-forge/maker-zip',
       config: {
         platforms: ['win32', 'darwin', 'linux']
