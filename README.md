@@ -16,6 +16,12 @@ Desktop utility for organizing image collections by copying them to categorized 
 - **Responsive UI**: Built with Tailwind CSS and Radix UI components
 - **Cross-platform**: Runs on Windows, macOS, and Linux
 
+## Demo
+
+Here is a demonstration of ImageSorter in action:
+
+![ImageSorter Demo](demo/imageSort_app_demo.mov.gif)
+
 ## Technology Stack
 
 - **Frontend**: React + TypeScript + Vite
