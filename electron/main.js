@@ -15,7 +15,8 @@ async function resolveFilename(sourceDir, entry, matchingMode, prefix = '', exte
     return match || null;
   } 
   
-  // Flexible mode - try base name match
+  // Flexible mode - try three strategies in sequence
+  // Strategy 1: Exact base name match
   const baseMatch = files.find(file => {
     const base = path.basename(file, path.extname(file));
     return base.toLowerCase() === normalizedEntry.toLowerCase();
@@ -23,7 +24,7 @@ async function resolveFilename(sourceDir, entry, matchingMode, prefix = '', exte
   
   if (baseMatch) return baseMatch;
   
-  // Try with common extensions
+  // Strategy 2: Common extension fallback
   const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
   for (const ext of imageExtensions) {
     const candidate = `${normalizedEntry}${ext}`;
@@ -32,7 +33,26 @@ async function resolveFilename(sourceDir, entry, matchingMode, prefix = '', exte
     }
   }
   
-  return null;
+  // Strategy 3: Partial matching (new enhancement)
+  // Find files where normalizedEntry is a substring of the base name
+  const partialMatches = files.filter(file => {
+    const base = path.basename(file, path.extname(file)).toLowerCase();
+    return base.includes(normalizedEntry.toLowerCase());
+  });
+
+  // Handle partial matches deterministically
+  if (partialMatches.length > 0) {
+    // Prefer exact matches at the end of filename (e.g. "593" in "879593")
+    const endMatches = partialMatches.filter(file => {
+      const base = path.basename(file, path.extname(file)).toLowerCase();
+      return base.endsWith(normalizedEntry.toLowerCase());
+    });
+
+    // Return end match if exists (more specific), otherwise first partial match
+    return endMatches.length > 0 ? endMatches[0] : partialMatches[0];
+  }
+  
+  return null; // No match found
 }
 
 let mainWindow

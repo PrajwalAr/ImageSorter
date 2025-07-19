@@ -12,6 +12,7 @@
 8. Enhanced CSV filename handling with case-insensitive resolution
 9. Added support for filenames with/without extensions
 10. Removed unused ipcHandlers.js module
+11. Implemented partial filename matching in resolveFilename function
 
 ## Technical Decisions
 
@@ -22,6 +23,7 @@
 - Configured Tailwind CSS for utility-first styling
 - Implemented case-insensitive filename resolution algorithm
 - Added flexible extension handling for image files
+- Added partial filename matching with end-match preference
 
 ## Important Patterns
 
@@ -33,6 +35,7 @@
 - Progress tracking for long-running operations
 - Case-insensitive filename matching
 - File extension fallback mechanism
+- Three-stage filename resolution (exact, extension, partial)
 
 ## Production Deployment Fixes (2025-07-16)
 
